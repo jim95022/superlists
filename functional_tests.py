@@ -24,7 +24,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # Он обращает внимение что заголовок страницы говорят о туду списке
         self.assertIn("To-Do", self.browser.title)
-        header_text = self.browser.find_element_by_id("h1").text
+        header_text = self.browser.find_element_by_tag_name("h1").text
         self.assertIn("To-Do", header_text)
 
 
@@ -47,7 +47,8 @@ class NewVisitorTest(unittest.TestCase):
         table = self.browser.find_element_by_id("id_list_table")
         rows = table.find_elements_by_tag_name("tr")
         self.assertTrue(
-            any(row.text == "1. Купить молока" for row in rows)
+            any(row.text == "1. Купить молока" for row in rows),
+            "Новый элемент списка не появился в таблице"
         )
 
 
