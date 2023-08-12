@@ -1,9 +1,9 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-import unittest
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
     """Тест нового посетителя"""
 
     def setUp(self):
@@ -24,7 +24,7 @@ class NewVisitorTest(unittest.TestCase):
 
         # Олег узнал про новое приложение для списков дел.
         # Ему кмдают ссылку и он переходит на домашнюю страницу.
-        self.browser.get("http://localhost:8000")
+        self.browser.get(self.live_server_url)
 
 
         # Он обращает внимение что заголовок страницы говорят о туду списке
@@ -74,7 +74,3 @@ class NewVisitorTest(unittest.TestCase):
 
         # Олег закрывает браузер и идет в магазин.
         self.browser.quit()
-
-
-if __name__ == "__main__":
-    unittest.main(warnings="ignore")
