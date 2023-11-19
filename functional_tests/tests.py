@@ -11,13 +11,16 @@ MAX_WAIT = 10
 class NewVisitorTest(LiveServerTestCase):
     """Тест нового посетителя"""
 
+
     def setUp(self):
         """Установка"""
         self.browser = webdriver.Firefox()
 
+
     def tearDown(self):
         """Демонтаж"""
         self.browser.quit()
+
 
     def wait_for_row_in_list_table(self, row_text):
         """Ожидать строку в таблице списка"""
@@ -32,6 +35,7 @@ class NewVisitorTest(LiveServerTestCase):
                 if time.time() - start_time > MAX_WAIT:
                     raise e
                 time.sleep(1/2)
+
 
     def test_can_start_a_list_for_one_user(self):
         """Тест: можно начать список для одного пользователя"""
@@ -77,6 +81,7 @@ class NewVisitorTest(LiveServerTestCase):
 
         # Олег закрывает браузер и идет в магазин.
         self.browser.quit()
+
 
 
     def test_multiple_users_can_start_lists_at_different_urls(self):
