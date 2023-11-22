@@ -131,7 +131,7 @@ class NewVisitorTest(LiveServerTestCase):
 
 
         # Опять таки нет следа от Олега
-        page_text = self.browser.find_element_by_name("body").text
+        page_text = self.browser.find_element_by_tag_name("body").text
         self.assertNotIn("Купить молока", page_text)
         self.assertNotIn("Cмешать молоко и бананаы в блендере", page_text)
 
