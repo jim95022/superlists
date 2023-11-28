@@ -1,2 +1,2 @@
-django
-selenium
+Django==3.2.20
+selenium==3.141.0
