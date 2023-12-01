@@ -3,8 +3,8 @@ Description=Gunicorn server for SITENAME
 
 [Service]
 Restart=on-failure
-User=elspeth WorkingDirectory=/home/elspeth/sites/SITENAME/source
-ExecStart=/home/elspeth/sites/SITENAME/virtualenv/bin/gunicorn --bind unix:/tmp/SITENAME.socket \
+User=jim9502 WorkingDirectory=/home/jim9502/sites/SITENAME/source
+ExecStart=/home/jim9502/sites/SITENAME/virtualenv/bin/gunicorn --bind unix:/tmp/SITENAME.socket \
 superlists.wsgi:application
 
 [Install]
