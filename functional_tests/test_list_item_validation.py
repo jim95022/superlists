@@ -6,7 +6,7 @@ from functional_tests.base import FunctionalTest
 class ItemValidationTest(FunctionalTest):
     """Тест валидации элемента списка"""
 
-    def test_connot_add_empty_list_items(self):
+    def test_cannot_add_empty_list_items(self):
         """Тест: нельзя добавлять пустые элементы списка"""
         # Олег открывает домашнюю страницу и случайно пытается отправить пустой элемент списка.
         self.browser.get(self.live_server_url)
