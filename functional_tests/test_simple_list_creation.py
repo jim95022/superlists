@@ -22,7 +22,7 @@ class NewVisitorTest(FunctionalTest):
 
 
         # Олегу предлагается ввести элемент списка
-        inputbox = self.browser.find_element_by_id("id_new_item")
+        inputbox = self.get_item_input_box()
         self.assertEqual(
             inputbox.get_attribute("placeholder"),
             "Enter a to-do item"
@@ -39,7 +39,7 @@ class NewVisitorTest(FunctionalTest):
 
 
         # Текстовое поле по-прежнему приглашает его добавить еще одно поле. Олег вводит "смешать молоко и бананаы в блендере"
-        inputbox = self.browser.find_element_by_id("id_new_item")
+        inputbox = self.get_item_input_box()
         inputbox.send_keys("Cмешать молоко и бананаы в блендере")
         inputbox.send_keys(Keys.ENTER)
 
@@ -57,7 +57,7 @@ class NewVisitorTest(FunctionalTest):
         
         # Олег начинает новый список
         self.browser.get(self.live_server_url)
-        inputbox = self.browser.find_element_by_id("id_new_item")
+        inputbox = self.get_item_input_box()
         inputbox.send_keys("Купить молока")
         inputbox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table("1. Купить молока")
@@ -86,7 +86,7 @@ class NewVisitorTest(FunctionalTest):
 
 
         # Руслан начинает свой список. вводня новый элемент.
-        inputbox = self.browser.find_element_by_id("id_new_item")
+        inputbox = self.get_item_input_box()
         inputbox.send_keys("Заказать протеин")
         inputbox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table("1. Заказать протеин")

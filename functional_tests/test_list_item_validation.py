@@ -10,7 +10,7 @@ class ItemValidationTest(FunctionalTest):
         """Тест: нельзя добавлять пустые элементы списка"""
         # Олег открывает домашнюю страницу и случайно пытается отправить пустой элемент списка.
         self.browser.get(self.live_server_url)
-        self.browser.find_element_by_id("id_new_item").send_keys(Keys.ENTER)
+        self.get_item_input_box().send_keys(Keys.ENTER)
 
         # Домашняя страница обновляется, и появляется сообщение об ошибке, которое говорит,
         # что элементы списка не должны быть пустми.
@@ -22,12 +22,12 @@ class ItemValidationTest(FunctionalTest):
         )
 
         # Он пробует снова, теперь с некми текстом для элемента, и теперь срабатывает
-        self.browser.find_element_by_id("id_new_item").send_keys("Buy milk")
-        self.browser.find_element_by_id("id_new_item").send_keys(Keys.ENTER)
+        self.get_item_input_box().send_keys("Buy milk")
+        self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table("1. Buy milk")
 
         # Как ни странно, Олег решает отправить второй пустой список элемента
-        self.browser.find_element_by_id("id_new_item").send_keys(Keys.ENTER)
+        self.get_item_input_box().send_keys(Keys.ENTER)
 
         # Он получает аналогичное предупреждение на странице списка
         self.wait_for(
@@ -38,7 +38,7 @@ class ItemValidationTest(FunctionalTest):
         )
 
         # И он может его исправить, заполнив поле неким текстом
-        self.browser.find_element_by_id("id_new_item").send_keys("Make tea")
-        self.browser.find_element_by_id("id_new_item").send_keys(Keys.ENTER)
+        self.get_item_input_box().send_keys("Make tea")
+        self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table("1. Buy milk")
         self.wait_for_row_in_list_table("2. Make tea")
