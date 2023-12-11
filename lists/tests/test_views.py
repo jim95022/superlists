@@ -76,7 +76,7 @@ class ListViewTest(TestCase):
         """Тест: ошибки валидации оканчиваются на странице списков"""
         list_ = List.objects.create()
         response = self.client.post(
-            f"/lists/{list_.id}",
+            f"/lists/{list_.id}/",
             data={"item_text": ""}
         )
         self.assertEqual(response.status_code, 200)
