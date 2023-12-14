@@ -14,12 +14,10 @@ class NewVisitorTest(FunctionalTest):
         # Ему кмдают ссылку и он переходит на домашнюю страницу.
         self.browser.get(self.live_server_url)
 
-
         # Он обращает внимение что заголовок страницы говорят о туду списке
         self.assertIn("To-Do", self.browser.title)
         header_text = self.browser.find_element_by_tag_name("h1").text
         self.assertIn("To-Do", header_text)
-
 
         # Олегу предлагается ввести элемент списка
         inputbox = self.get_item_input_box()
@@ -28,26 +26,21 @@ class NewVisitorTest(FunctionalTest):
             "Enter a to-do item"
         )
 
-
         # Олежа набирает в текстовом поле "Купить молока". (Олег готовит привосходные молочные коктейли)
         inputbox.send_keys("Купить молока")
-
 
         # Олег нажимает Enter, страница обновляется, и теперь страница содержит первый элемент "1. Купить молока"
         inputbox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table("1. Купить молока")
-
 
         # Текстовое поле по-прежнему приглашает его добавить еще одно поле. Олег вводит "смешать молоко и бананаы в блендере"
         inputbox = self.get_item_input_box()
         inputbox.send_keys("Cмешать молоко и бананаы в блендере")
         inputbox.send_keys(Keys.ENTER)
 
-
         # Страница обновляется и теперь отображается два элемента в списке. 
         self.wait_for_row_in_list_table("1. Купить молока")
         self.wait_for_row_in_list_table("2. Cмешать молоко и бананаы в блендере")
-
 
         # Олег закрывает браузер и идет в магазин.
         self.browser.quit()
