@@ -55,13 +55,11 @@ class NewVisitorTest(FunctionalTest):
         inputbox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table("1. Купить молока")
 
-
         # Олегу интересно останится ли запись после того как он закроет сайт. 
         # Он обращает внимание что сайт сгенерировал уникальный URL адрес. 
         # Также присутсует небольшой текст с объснением
         oleg_list_url = self.browser.current_url
         self.assertRegex(oleg_list_url, r"/lists/.+")
-
 
         # Теперь приходит новый пользователь, Руслан
 
@@ -70,13 +68,11 @@ class NewVisitorTest(FunctionalTest):
         self.browser.quit()
         self.browser = webdriver.Firefox()
 
-
         # Руслан открывает домашнюю страницу. Нет никаких признаков списка Олега.
         self.browser.get(self.live_server_url)
         page_text = self.browser.find_element_by_tag_name("body").text
         self.assertNotIn("Купить молока", page_text)
         self.assertNotIn("Cмешать молоко и бананаы в блендере", page_text)
-
 
         # Руслан начинает свой список. вводня новый элемент.
         inputbox = self.get_item_input_box()
@@ -84,12 +80,10 @@ class NewVisitorTest(FunctionalTest):
         inputbox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table("1. Заказать протеин")
 
-
         # Руслан получает уникальный URL адрес
         ruslan_list_url = self.browser.current_url
         self.assertRegex(ruslan_list_url, r"/lists/.+")
         self.assertNotEqual(ruslan_list_url, oleg_list_url)
-
 
         # Опять таки нет следа от Олега
         page_text = self.browser.find_element_by_tag_name("body").text
