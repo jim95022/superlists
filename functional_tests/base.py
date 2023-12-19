@@ -5,7 +5,6 @@ from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 import time
 
-
 MAX_WAIT = 10
 
 
