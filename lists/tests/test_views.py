@@ -25,7 +25,8 @@ class ListViewTest(TestCase):
 
     def test_uses_list_template(self):
         """Тест: используется шаблон списка"""
-        response = self.client.get("/lists/unique-list/")
+        mylist = List.objects.create()
+        response = self.client.get(f"/lists/{mylist.id}/")
         self.assertTemplateUsed(response, "list.html")
 
     def test_passes_correct_list_to_template(self):
