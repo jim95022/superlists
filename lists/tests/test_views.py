@@ -3,7 +3,7 @@ from unittest import skip
 from django.test import TestCase
 from django.utils.html import escape
 
-from lists.forms import ItemForm, EMPTY_ITEM_ERROR
+from lists.forms import ItemForm, EMPTY_ITEM_ERROR, DUPLICATE_ITEM_ERROR, ExistingListItemForm
 from lists.models import Item, List
 
 
@@ -100,17 +100,11 @@ class ListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "list.html")
 
-    def test_for_invalid_input_passes_form_to_template(self):
-        """Тест на недопустимый ввод: форма передается в шаблон"""
-        response = self.post_invalid_input()
-        self.assertIsInstance(response.context["form"], ItemForm)
-
     def test_for_invalid_input_shows_error_on_page(self):
         """Тест на недопустимый ввод: на странице показывается ошибка"""
         response = self.post_invalid_input()
         self.assertContains(response, escape(EMPTY_ITEM_ERROR))
 
-    @skip
     def test_duplicate_item_validation_errors_end_up_on_lists_page(self):
         """Тест: ошибки валидации повторяющегося элемента оканчивается на странице списков"""
         list1 = List.objects.create()
@@ -120,7 +114,7 @@ class ListViewTest(TestCase):
             data={"text": "textey"}
         )
 
-        expected_error = escape("You've already got this in your list")
+        expected_error = escape(DUPLICATE_ITEM_ERROR)
 
         self.assertContains(response, expected_error)
         self.assertTemplateUsed(response, "list.html")
@@ -130,12 +124,8 @@ class ListViewTest(TestCase):
         """Тест отображения формы для элемента"""
         list_ = List.objects.create()
         response = self.client.get(f"/lists/{list_.id}/")
-        self.assertIsInstance(response.context["form"], ItemForm)
+        self.assertIsInstance(response.context["form"], ExistingListItemForm)
         self.assertContains(response, "name=\"text\"")
-
-
-class NewListTest(TestCase):
-    """тест нового списка"""
 
     def test_invalid_list_items_arent_saved(self):
         """Тест: сохраняются недопустимые элементы списка"""
@@ -170,5 +160,5 @@ class NewListTest(TestCase):
 
     def test_for_invalid_input_passes_form_to_template(self):
         """Тест на недопустимый ввод: форма передается в шаблон"""
-        respnose = self.client.post("/lists/new", data={"text": ""})
-        self.assertIsInstance(respnose.context["form"], ItemForm)
+        response = self.post_invalid_input()
+        self.assertIsInstance(response.context['form'], ExistingListItemForm)
