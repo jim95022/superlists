@@ -17,4 +17,3 @@ class Token(models.Model):
     """Модель маркера"""
     email = models.EmailField()
     uid = models.CharField(default=uuid.uuid4, max_length=40)
-
