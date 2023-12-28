@@ -1,5 +1,3 @@
-import sys
-
 from django.contrib import messages, auth
 from django.shortcuts import redirect
 from django.core.mail import send_mail
