@@ -4,8 +4,10 @@ import re
 
 from .base import FunctionalTest
 
+
 TEST_EMAIL = "jim9502@example.com"
 SUBJECT = "Your login link for Superlists"
+
 
 class LoginTest(FunctionalTest):
     """Тест регистрации в системе"""
