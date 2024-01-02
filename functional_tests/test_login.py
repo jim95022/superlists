@@ -49,4 +49,3 @@ class LoginTest(FunctionalTest):
         )
         navbar = self.browser.find_element_by_css_selector(".navbar")
         self.assertIn(TEST_EMAIL, navbar.text)
-        
