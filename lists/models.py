@@ -4,7 +4,6 @@ from django.urls import reverse
 
 class List(models.Model):
     """Список"""
-
     def get_absolute_url(self):
         """Получить абсолютный урл"""
         return reverse("view_list", args=[self.id])
