@@ -7,11 +7,6 @@ from accounts.models import Token
 class SendLoginEmailViewTest(TestCase):
     """Тест представления, которое отправляет сообщения для входа в систему"""
 
-    def test_redirects_to_home_page(self):
-        """Тест: переадресуется на домашнюю страницу"""
-        response = self.client.get("/accounts/login?token=abcd123")
-        self.assertRedirects(response, "/")
-
     @patch("accounts.views.send_mail")
     def test_sends_mail_to_address_from_post(self, mock_send_mail):
         """Тест: отправляется сообщение на адрес из метода post"""
@@ -67,7 +62,15 @@ class SendLoginEmailViewTest(TestCase):
         (subject, body, from_email, to_list), kwargs = mock_send_mail.call_args
         self.assertIn(expected_url, body)
 
-    @patch("accounts.views.auth")
+
+@patch("accounts.views.auth")
+class LoginViewTest(TestCase):
+
+    def test_redirects_to_home_page(self, mock_auth):
+        """Тест: переадресуется на домашнюю страницу"""
+        response = self.client.get("/accounts/login?token=abcd123")
+        self.assertRedirects(response, "/")
+
     def test_calls_authenticate_with_uid_from_get_request(self, mock_auth):
         """Тест: вызывается authenticate c uid из GET-запроса"""
         self.client.get("/accounts/login?token=abcd123")
@@ -76,7 +79,6 @@ class SendLoginEmailViewTest(TestCase):
             call(uid="abcd123")
         )
 
-    @patch("accounts.views.auth")
     def test_calls_auth_login_with_user_if_there_is_one(self, mock_auth):
         """Тест: вызывается auth_login с пользователем, если такой имеется"""
         response = self.client.get("/accounts/login?token=abcd123")
@@ -84,3 +86,9 @@ class SendLoginEmailViewTest(TestCase):
             mock_auth.login.call_args,
             call(response.wsgi_request, mock_auth.authenticate.return_value)
         )
+
+    def test_does_not_login_if_user_is_not_authenticated(self, mock_auth):
+        """Тест: не регистрируется в системе, если пользователь не аутентифицирован"""
+        mock_auth.authenticate.return_value = None
+        self.client.get("/accounts/login?token=abcd123")
+        self.assertEqual(mock_auth.login.called, False)

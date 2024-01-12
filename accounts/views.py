@@ -10,7 +10,9 @@ def send_login_email(request):
     """Отправить сообщение для входа в систему"""
     email = request.POST['email']
     token = Token.objects.create(email=email)
-    url = request.build_absolute_uri(reverse("login") + "?token=" + str(token.uid))
+    url = request.build_absolute_uri(
+        reverse("login") + "?token=" + str(token.uid)
+    )
     message_body = f"Use this link to log in:\n\n{url}"
     send_mail(
         'Your login link for Superlists',
@@ -27,5 +29,7 @@ def send_login_email(request):
 
 def login(request):
     """Зарегистрировать вход в систему"""
-    auth.authenticate(uid=request.GET.get("token"))
+    user = auth.authenticate(uid=request.GET.get("token"))
+    if user:
+        auth.login(request, user)
     return redirect("/")
