@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 
     'lists',
     'accounts',
+    'functional_tests',
 ]
 
 # Auth settings
