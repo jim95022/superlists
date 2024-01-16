@@ -16,6 +16,7 @@
 ## Служба Systemd
 * см. gunicorn-systemd.template.service
 * заменить SITENAME, например, на staging.my-domain.com
+* заменить EMAIL_HOST_PASSWORD почтовым паролем
 
 ## Структура папок:
 Если допустить, что есть учетная запись пользователя в /home/username

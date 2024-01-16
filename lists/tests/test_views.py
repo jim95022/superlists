@@ -162,3 +162,8 @@ class ListViewTest(TestCase):
         """Тест: ошибки валидации выводятся на домашней странице"""
         respnose = self.client.post("/lists/new", data={"text": ""})
         self.assertContains(respnose, escape(EMPTY_ITEM_ERROR))
+
+class MyListsTest(TestCase):
+    def test_my_lists_url_renders_my_lists_template(self):
+        response = self.client.get('/lists/users/a@b.com/')
+        self.assertTemplateUsed(response, 'my_lists.html')

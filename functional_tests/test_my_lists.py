@@ -12,13 +12,13 @@ class MyListsTest(FunctionalTest):
     """Тест приложения 'Мои списки'"""
 
     def create_pre_authenticated_session(self, email):
-        '''создать предварительно аутентифицированный сеанс'''
+        '''Создать предварительно аутентифицированный сеанс'''
         if self.staging_server:
             session_key = create_session_on_server(self.staging_server, email)
         else:
             session_key = create_pre_authenticated_session(email)
-        # установить cookie, которые нужны для первого посещения домена.
-        # страницы 404 загружаются быстрее всего!
+        # Установить cookie, которые нужны для первого посещения домена.
+        # Страницы 404 загружаются быстрее всего!
         self.browser.get(self.live_server_url + "/404_no_such_url/")
         self.browser.add_cookie(
             dict(
@@ -36,5 +36,46 @@ class MyListsTest(FunctionalTest):
 
         # Олег является зарегестрированным пользователем
         self.create_pre_authenticated_session(email)
+
+        # Олег открывает домашнюю страницу и начинает новый список
         self.browser.get(self.live_server_url)
-        self.wait_to_be_logged_in(email)
+        self.add_list_item("Reticulate splines")
+        self.add_list_item("Immanentize eschaton")
+        first_list_url = self.browser.current_url
+
+        # Он замечает ссылку на "Мои списки" в первый раз
+        self.browser.find_element_by_link_text("My lists").click()
+
+        # Она видит, что ее список находится там, и он назван на основе первого элемента списка
+        self.wait_for(
+            lambda: self.browser.find_element_by_link_text("Reticulate splines")
+        )
+        self.browser.find_element_by_link_text("Reticulate splines").click()
+        self.wait_for(
+            lambda: self.assertEqual(self.browser.current_url, first_list_url)
+        )
+
+        # Он решает начать еще один список, чтобы только убедиться
+        self.browser.get(self.live_server_url)
+        self.add_list_item("Click cows")
+        second_list_url = self.browser.current_url
+
+        # Под заголовком "Мои списки" появляется ее новый список
+        self.browser.find_element_by_link_text().click()
+        self.wait_for(
+            lambda: self.browser.find_element_by_link_text("Click cows")
+        )
+
+        self.browser.find_element_by_link_text("Click cows").click()
+        self.wait_for(
+            lambda: self.assertEqual(self.browser.current_url, second_list_url)
+        )
+
+        # Она выходит из системы. Опция "Мои списки" исчезает
+        self.browser.find_element_by_link_text("Log out").click()
+        self.wait_for(
+            lambda: self.assertEqual(
+                self.browser.find_element_by_link_text("Click cows"),
+                []
+            )
+        )
